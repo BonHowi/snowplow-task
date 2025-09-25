@@ -108,7 +108,7 @@ Each JSON file represents a brand configuration. Example:
 - All string values that require quotes are wrapped using `DoubleQuotedScalarString`
 - Inline lists are wrapped using `CommentedSeq` with flow style
 - Project directories are handled safely to avoid overwriting existing data
-- dbt init usage was added later as a poc, consider it not finished
+- ```dbt init``` usage was added later as a poc, consider it not finished
 
 ### Future work (in order of biggest priority):
 1. Make config file a separate class for dbt_project_obj
