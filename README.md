@@ -1,1 +1,121 @@
-# snowplow-task
+# Snowplow DBT Project Generator
+
+This script generates per-brand **dbt projects** optimized for Snowplow Unified. It reads brand-specific JSON files and produces fully configured dbt projects with proper YAML formatting.
+
+## Table of Contents
+1. Purpose
+2. Installation
+3. Usage
+4. Input JSON Structure
+5. How It Works
+6. Output Files
+7. Customization for Brands
+8. Developer Notes
+9. Future work (prioritized)
+10. Struggles
+
+## Purpose
+
+Snowplow Unified requires per-brand dbt projects that include:
+
+- `dbt_project.yml` with Snowplow-specific configurations
+- `packages.yml` pointing to the Snowplow Unified DBT package
+- `profiles.example.yml` as a starting point for warehouse configuration
+- Optional directories for `models`, `tests`, `macros`, etc.
+
+This script automates generating these projects from JSON brand configurations, ensuring consistent structure and YAML formatting (including quoted strings and inline sequences).
+
+## Installation
+
+1. Ensure Python 3.10+ is installed.
+2. Install dependencies(it also includes dbt-snowflake specific packages, can be reduced to just packages used for the project):
+
+    pip install -r requirements.txt
+
+3. Make the script executable:
+
+    chmod +x generate_snowplow_dbt_projects.py
+
+## Usage
+
+### Single JSON
+
+    python generate_snowplow_dbt_projects.py --input brand.json
+
+### Directory of JSONs
+
+    python generate_snowplow_dbt_projects.py --input-dir ./brands_json
+
+### Optional Parameters
+
+- `--out` / `-o` — Root directory for generated projects (default: `./dbt_projects`)
+- `--package-git` — Git URL of Snowplow Unified DBT package
+- `--package-ref` — Branch, tag, or commit of Snowplow Unified DBT package
+
+## Input JSON Structure
+
+Each JSON file represents a brand configuration. Example:
+
+    {
+      "brand_name": "Luxury Stays",
+      "historical_data_since": "2023-06-01",
+      "mobile_tracking": "yes",
+      "web_tracking": "yes",
+      "app_ids": ["luxury_web"],
+      "user_set_variables": {
+        "snowplow__max_session_days": 10,
+        "snowplow__lookback_window_hours": 3
+      }
+    }
+
+- `brand_name` → Name of the brand (used to generate project slug)
+- `historical_data_since` → Start date for historical data processing
+- `mobile_tracking` / `web_tracking` → Enable mobile or web tracking
+- `app_ids` → List of associated app IDs
+- `user_set_variables` → Optional Snowplow variables specific to this brand
+
+## How It Works
+
+1. **Slugify brand name** → Converts `"Luxury Stays"` → `luxury-stays`
+2. **Handle project directory** → If project exists, asks to overwrite or rename old project
+3. **Generate `packages.yml`** → Points to Snowplow Unified DBT package
+4. **Generate `dbt_project.yml`** → Includes quoted strings for values, inline sequences for lists
+5. **Generate `profiles.example.yml`** → Minimal warehouse config template
+6. **Create README.md and models directory** → Project is ready to use
+
+## Output Files
+
+- `dbt_project.yml` → Core dbt configuration
+- `packages.yml` → Package references
+- `profiles.example.yml` → Example warehouse profile
+- `README.md` → Brand-specific information
+- `models/` → Empty directory for custom models
+
+## Customization for Brands
+
+- `vars` in `dbt_project.yml` are built dynamically from the JSON input
+- Optional user-set variables are preserved
+- Mobile and web tracking flags are automatically applied
+- Snowplow-specific schemas (manifest, scratch, derived) are configured per brand
+
+## Developer Notes
+
+- Uses `ruamel.yaml` to preserve quotes and inline sequences
+- All string values that require quotes are wrapped using `DoubleQuotedScalarString`
+- Inline lists are wrapped using `CommentedSeq` with flow style
+- Project directories are handled safely to avoid overwriting existing data
+
+### Future work (in order of biggest priority):
+1. Better dbt_profile.yml quote syntax handling, verify which variables need to be in quotes - maybe make config file that will let the program know which variables to keep in ruamel.yaml DoubleQuotedScalarString
+2. More snowplow variables - maybe make config file with available options to compare with imput json file, create error handling for when attributes do not match
+3. Running dbt locally and testing if no errors appear
+4. More error handling
+5. Unit testing
+6. Installing dbt - also with cloud provider specific packages
+7. Better UI (more input attributes if required, selecting specific file using windows file explorer, etc.)
+
+
+
+### Struggles:
+- Making pyaml work with dbt desired output -> switched to ruamel.yaml instead
+- dbt variables quoting

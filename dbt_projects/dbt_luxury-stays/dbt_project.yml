@@ -1,0 +1,37 @@
+name: "snowplow_unified_for_luxury-stays"
+version: 1.0.0
+config-version: 2
+require-dbt-version: [">=1.6.0", "<2.0.0"]
+profile: your_profile_name_here
+dispatch:
+  - macro_namespace: dbt
+    search_order: ["snowplow_utils", "dbt"]
+model-paths: [models]
+analysis-paths: [analysis]
+test-paths: [tests]
+macro-paths: [macros]
+docs-paths: [docs]
+asset-paths: [assets]
+target-path: target
+clean-targets: [target, dbt_modules, dbt_packages]
+vars:
+  snowplow_unified:
+    snowplow__max_session_days: 10
+    snowplow__lookback_window_hours: 3
+    snowplow__start_date: '2023-06-01'
+    snowplow__enable_mobile_data: false
+    snowplow__enable_web_data: true
+    snowplow__app_ids:
+      - luxury_web
+    snowplow__brand_name: Luxury Stays
+models:
+  snowplow_unified:
+    base:
+      manifest:
+        +schema: my_manifest_schema
+      scratch:
+        +schema: my_scratch_schema
+    sessions:
+      +schema: my_derived_schema
+      scratch:
+        +schema: my_scratch_schema

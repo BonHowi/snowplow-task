@@ -1,0 +1,16 @@
+{
+  "brand_name": "Backpacker Connect",
+  "brand_summary":"Users plan trips over weeks or months. Heavy offline functionality for travelers. Lots of user-generated content and social features. Integration with offline activities and check-ins.",
+   "app_ids": [
+        "backpacker_web",
+        "backpacker_ios",
+        "backpacker_android"
+    ],
+  "historical_data_since": "2023-01-01",
+  "web_tracking":"yes",
+  "mobile_tracking":"yes",
+  "user_set_variables": {
+    "snowplow__max_session_days" : 10,
+    "snowplow__lookback_window_hours" : 3
+  }
+}

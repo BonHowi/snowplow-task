@@ -1,0 +1,12 @@
+{
+  "brand_name": "LastMinute Deals",
+  "brand_summary":"Lightning deals lasting 1-2 hours. High concurrent user volume during deal drops. Need real-time tracking of inventory and bookings. Heavy mobile app usage during commute hours.",
+  "app_ids": ["lastminute_web", "lastminute_ios", "lastminute_android"],
+  "historical_data_since": "2024-01-01",
+  "web_tracking":"yes",
+  "mobile_tracking":"yes",
+  "user_set_variables": {
+    "snowplow__max_session_days" : 10,
+    "snowplow__lookback_window_hours" : 3
+  }
+}

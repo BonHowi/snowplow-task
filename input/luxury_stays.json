@@ -1,0 +1,12 @@
+{
+  "brand_name": "Luxury Stays",
+  "brand_summary":"Users spend hours researching luxury properties. High-value bookings need perfect attribution. Complex booking flow with many steps.",
+  "app_ids": ["luxury_web"],
+  "historical_data_since": "2023-06-01",
+  "web_tracking":"yes",
+  "mobile_tracking":"no",
+  "user_set_variables": {
+    "snowplow__max_session_days" : 10,
+    "snowplow__lookback_window_hours" : 3
+  }
+}
