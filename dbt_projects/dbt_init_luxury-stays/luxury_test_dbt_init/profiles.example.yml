@@ -1,0 +1,9 @@
+# Minimal example profile. Replace values with your warehouse config.
+        your_profile_name_here:
+        target: dev
+        outputs:
+            dev:
+            type: <your_warehouse>  # e.g., bigquery, snowflake, redshift, databricks
+            threads: 1
+            # other warehouse-specific connection properties here
+        
