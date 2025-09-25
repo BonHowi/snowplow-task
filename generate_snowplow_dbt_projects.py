@@ -2,9 +2,6 @@
 """
 generate_snowplow_dbt_projects.py
 
-This version requires `ruamel.yaml` to be installed:
-    pip install ruamel.yaml
-
 Usage:
   # Single JSON:
   python generate_snowplow_dbt_projects.py --input brand.json
